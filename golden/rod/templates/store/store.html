@@ -1,0 +1,148 @@
+{% load bootstrap4 %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block styles%}
+    {% bootstrap_css %}
+    <link rel="stylesheet" href="{% static 'css/main.css'%}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
+    {% endblock %}
+    <title>Golden rod</title>
+</head>
+<body>
+    <nav class="navbar navbar-expand-md">
+        <div id="mySidebar" class="sidebar">
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+            <a href="#" class="navbar-brand">
+                <h2 class="text-center">GOLDENROD <br> FOODS </h>
+    
+            </a>
+            <a href="#">Home</a>
+            <a href="/accounts/register/">Sign Up</a>
+            <a href="#">Contact</a>
+        
+                <a href="/admin/login/">Admin</a>
+           
+            {% if user.is_authenticated %}
+           
+            <a href="#" class="dropdown-toggle btn btn-default" data-toggle="dropdown" role="button" aria-expanded="false">Account
+                      <span class="caret"></span>
+                  </a>
+                  <ul class="dropdown-menu" role="menu">
+                    <li>
+                      <a href="{%url 'store'%}">Home</a>
+                    </li>
+                    <li>
+                      <a href="/accounts/password/change">Change Password</a>
+                    </li>
+                    <li>
+                      <a href="/logout">Logout</a>
+                    </li>
+                 
+                  </ul>
+
+              
+        {% else %}
+          <a class='btn btn-default' href="/accounts/login">Login</a>
+
+
+        {% endif %}
+        </div>
+    
+        <div id="main">
+            <button class="openbtn" onclick="openNav()">&#9776;Navigate </button>
+    
+        </div>
+       
+  
+        <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+            <div class="navbar-nav">
+            
+            </div>
+            <form class="form-inline">
+                <a class="navbar-brand" href="">
+                    <h2>GOLDENROD <br> FOODS</h2>
+                </a>
+                <!-- <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search">
+                    <div class="input-group-append">
+                        <button type="button" class="btn btn-default"><i class="fa fa-search"></i></button>
+                    </div>
+                </div> -->
+            </form>
+            <div class="navbar-nav">
+                <button class="cart">Cart
+                    <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-4">
+                <img style="height:250px;width:180px;" src="https://i.pinimg.com/236x/ea/07/92/ea079271d003829a11a4a6b77e4700f8.jpg" alt="">
+                <div class="box-element product">
+                    <h6><strong>Product</strong> </h6>
+                    <hr>
+
+                    <button class="btn btn-outline-secondary add-btn">Add to cart</button>
+                    <a class="btn btn-online-success" href="">View</a>
+                    <h4 style="display:inline-block; float: right;"> <strong> $20</strong> </h4>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <img style="height:250px;width:180px;" src="https://i.pinimg.com/564x/03/e1/92/03e192ff5166d420909c3957a5d86264.jpg" alt="">
+                <div class="box-element product">
+                    <h6><strong>Product</strong> </h6>
+                    <hr>
+
+                    <button class="btn btn-outline-secondary add-btn">Add to cart</button>
+                    <a class="btn btn-online-success" href="">View</a>
+                    <h4 style="display:inline-block; float: right;"> <strong> $20</strong> </h4>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <img style="height:250px;width:180px;" src="https://i.pinimg.com/236x/2c/f4/27/2cf427ff858ce80432446c1ebb3bfda4.jpg" alt="">
+                <div class="box-element product">
+                    <h6><strong>Product</strong> </h6>
+                    <hr>
+
+                    <button class="btn btn-outline-secondary add-btn">Add to cart</button>
+                    <a class="btn btn-online-success" href="">View</a>
+                    <h4 style="display:inline-block; float: right;"> <strong> $20</strong> </h4>
+                </div>
+            </div>
+            
+     
+        </div>
+        
+    </div>
+
+  
+  
+    {% block scripts%}
+    <script>
+        /* Set the width of the sidebar to 250px and the left margin of the page content to 250px */
+        function openNav() {
+            document.getElementById("mySidebar").style.width = "250px";
+            document.getElementById("main").style.marginLeft = "250px";
+            document.body.style.backgroundColor = "goldenrod";
+        }
+
+        /* Set the width of the sidebar to 0 and the left margin of the page content to 0 */
+        function closeNav() {
+            document.getElementById("mySidebar").style.width = "0";
+            document.getElementById("main").style.marginLeft = "0";
+            document.body.style.backgroundColor = "white";
+        }
+        var myCarousel = document.querySelector('#myCarousel')
+        var carousel = new bootstrap.Carousel(myCarousel)
+    </script>
+    {% endblock %}
+</body>
+</html>
