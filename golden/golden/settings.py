@@ -80,8 +80,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'goldenrod',
-        'USER': 'postgres',
-        'PASSWORD': 'qwerty',
+        'USER': 'moringa',
+        'PASSWORD': 'access',
+        'HOST': 'localhost', # the missing piece of the puzzle 
     }
 }
 
