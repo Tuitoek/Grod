@@ -253,3 +253,16 @@
   -webkit-transform: translate3d(0,0,0);
   transform: translate3d(0,0,0);
 }
+
+span{
+  color: #111;
+}
+.footer{
+  position: fixed;
+  left:0;
+  bottom: 0;
+  width: 100%;
+  background-color: #63bc46;
+  color:black;
+  text-align: center;
+}

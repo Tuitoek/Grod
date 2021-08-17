@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'crispy_forms',
     'bootstrap4',
     'rod',
     'django.contrib.admin',
@@ -80,8 +81,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'goldenrod',
-        'USER': 'moringa',
-        'PASSWORD': 'access',
+        'USER': 'postgres',
+        'PASSWORD': 'qwerty',
         'HOST': 'localhost', # the missing piece of the puzzle 
     }
 }

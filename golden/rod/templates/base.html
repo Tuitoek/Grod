@@ -16,6 +16,7 @@
 </head>
 
 <body>
+    {% block content%}
     <nav class="navbar navbar-expand-md">
         <div id="mySidebar" class="sidebar">
             <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
@@ -25,7 +26,6 @@
             </a>
             <a href="#">Home</a>
             <a href="/accounts/register/">Sign Up</a>
-            <a href="/accounts/login">Sign In</a>
             <a href="#">Contact</a>
 
             <a href="/admin/login/">Admin</a>
@@ -86,98 +86,13 @@
             </div>
         </div>
     </nav>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-4">
-                <img style="height:250px;width:180px;"
-                    src="https://i.pinimg.com/236x/ea/07/92/ea079271d003829a11a4a6b77e4700f8.jpg" alt="">
-                <div class="box-element product">
-                    <h6><strong>Product</strong> </h6>
-                    <hr>
-
-                    <button class="btn btn-outline-secondary add-btn">Add to cart</button>
-                    <a class="btn btn-online-success" href="">View</a>
-                    <h4 style="display:inline-block; float: right;"> <strong> $20</strong> </h4>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <img style="height:250px;width:180px;"
-                    src="https://i.pinimg.com/564x/03/e1/92/03e192ff5166d420909c3957a5d86264.jpg" alt="">
-                <div class="box-element product">
-                    <h6><strong>Product</strong> </h6>
-                    <hr>
-
-                    <button class="btn btn-outline-secondary add-btn">Add to cart</button>
-                    <a class="btn btn-online-success" href="">View</a>
-                    <h4 style="display:inline-block; float: right;"> <strong> $20</strong> </h4>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <img style="height:250px;width:180px;"
-                    src="https://i.pinimg.com/236x/2c/f4/27/2cf427ff858ce80432446c1ebb3bfda4.jpg" alt="">
-                <div class="box-element product">
-                    <h6><strong>Product</strong> </h6>
-                    <hr>
-
-                    <button class="btn btn-outline-secondary add-btn">Add to cart</button>
-                    <a class="btn btn-online-success" href="">View</a>
-                    <h4 style="display:inline-block; float: right;"> <strong> $20</strong> </h4>
-                </div>
-            </div>
 
 
-        </div>
-        <div class="footer">
-            <div class="footer">
-                <div class="row">
+   {% endblock %}
+   
+  
 
-                    <p><i class="fa fa-instagram" aria-hidden="true">Instagram</i>
-                    </p>
-
-                    <p><i class="fa fa-whatsapp" aria-hidden="true"> Whatsapp</i></p>
-
-                    <p><i class="fa fa-facebook-official" aria-hidden="true">Facebook</i></p>
-
-                    <p></p><i class="fa fa-envelope" aria-hidden="true"></i>
-
-
-                </div>
-                <p>Author: TUITOEK AND REAGAN <br>All rights reserved to T and R</p>
-            </div>
-        </div>
-        <!-- <footer>
-            <div class="footer">
-                <div class="row">
-                    <span>
-                        <i class="fa fa-instagram" aria-hidden="true"></i>
-                  
-                        </span>
-                    <span><i class="fa fa-whatsapp" aria-hidden="true"> Whatsapp</i></span>
-                    <span><i class="fa fa-facebook-official" aria-hidden="true">Facebook</i></span>
-                    <span>                
-                        <i class="fa fa-envelope" aria-hidden="true"></i>
-                    </span>
-                   
-                </div>
-                <p> <p>Author: ALL RIGHTS RESERVED TO TUITOEK AND REAGAN CC</p></p>
-            </div>
-        </footer> -->
-
-
-
-    </div>
-    <br>
-    <br>
-
-    <!--===FOOTER!!
-    =============================================================================================== -->
-
-
-
-
-
-
-
+ 
     {% block scripts%}
     <script>
         /* Set the width of the sidebar to 250px and the left margin of the page content to 250px */
