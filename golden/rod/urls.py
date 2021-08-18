@@ -1,14 +1,14 @@
-from django.urls import path,include
+from django.urls import path
+
 from . import views
-from django.conf.urls import url
 
 urlpatterns = [
-    
-    path('',views.store, name='store'),
-    path('cart/', views.cart,name='cart'),
-    path('checkout/',views.checkout,name='chechout'),
-    url(r'^accounts/',include('registration.backends.simple.urls')),
+	#Leave as empty string for base url
+	path('', views.store, name="store"),
+	path('cart/', views.cart, name="cart"),
+	path('checkout/', views.checkout, name="checkout"),
 
-
+	path('update_item/', views.updateItem, name="update_item"),
+	path('process_order/', views.processOrder, name="process_order"),
 
 ]
