@@ -79,7 +79,7 @@ WSGI_APPLICATION = 'golden.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'goldenrod',
+        'NAME': 'golden',
         'USER': 'moringa',
         'PASSWORD': 'access',
         'HOST': 'localhost', # the missing piece of the puzzle 

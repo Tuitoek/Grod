@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 from django.db import models
 from django.contrib.auth.models import User
+import uuid
 
 
 from django.core.mail import send_mail
@@ -13,204 +14,82 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.base_user import BaseUserManager
 
 # Create your models here.
+
 class Customer(models.Model):
-    user = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE)
-    name = models.CharField(max_length=200,null=True)
-    email = models.CharField(max_length=200)
-    phone_number = models.CharField(max_length=10, blank= True)
+	user = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE)
+	name = models.CharField(max_length=200, null=True)
+	email = models.CharField(max_length=200)
 
-
-    def __str__(self):
-        return self.name
-
-
-class Shop(models.Model):
-    store_name = models.CharField(max_length=100)
-    description = models.TextField()
-    date_started = models.DateTimeField(auto_now_add=True)
-    address = models.CharField(max_length=100)
-    city = models.CharField(max_length=100)
-    country = models.CharField(max_length=100)
-    phone_no = models.CharField(max_length=100)
-
-    def __str__(self):
-        return self.store_name
-
-    def save_shop(self):
-        self.save()
-
-    def delete_delete(self):
-        self.delete()
-
-
-class Category(models.Model):
-    category = models.CharField(max_length=100)
-    image = models.ImageField('image')
-    
-   
-    def __str__(self):
-        return self.category
-
-    def save_category(self):
-        self.save()
-
-    def delete_category(self):
-        self.delete()
-
-
-
+	def __str__(self):
+		return self.name
 
 
 class Product(models.Model):
-    item_name = models.CharField(max_length=100)
-    description = models.TextField()
-    price = models.IntegerField()
-    date_added = models.DateTimeField(auto_now_add=True)
-    image = models.ImageField(upload_to= '', blank=True)
-    image2 = models.ImageField('image_2', blank=True, null=True)
-    image3 = models.ImageField('image_3', blank=True, null=True)
-    image4 = models.ImageField('image_4', blank=True, null=True)
-    quantity = models.IntegerField(default=0)
-    color = models.CharField(max_length=100, blank=True, null=True)
-    previous_price = models.IntegerField(blank=True, null=True)
-    shipped_from = models.ForeignKey("Shop", on_delete=models.CASCADE, related_name='shop')
-    size = models.CharField(max_length=100, blank=True)
-    brand = models.CharField(max_length=100, blank=True)
-    sub_category = models.ForeignKey(
-        "Category", on_delete=models.CASCADE, related_name='sub_categ')
+	name = models.CharField(max_length=200)
+	price = models.FloatField()
+	digital = models.BooleanField(default=False,null=True, blank=True)
+	image = models.ImageField(null=True, blank=True)
 
-    def __str__(self):
-        return self.item_name
+	def __str__(self):
+		return self.name
 
-    def save_product(self):
-        self.save()
+	@property
+	def imageURL(self):
+		try:
+			url = self.image.url
+		except:
+			url = ''
+		return url
 
-    def delete_product(self):
-        self.delete()
+class Order(models.Model):
+	customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, blank=True)
+	date_ordered = models.DateTimeField(auto_now_add=True)
+	complete = models.BooleanField(default=False)
+	transaction_id = models.CharField(max_length=100, null=True)
 
+	def __str__(self):
+		return str(self.id)
+		
+	@property
+	def shipping(self):
+		shipping = False
+		orderitems = self.orderitem_set.all()
+		for i in orderitems:
+			if i.product.digital == False:
+				shipping = True
+		return shipping
 
+	@property
+	def get_cart_total(self):
+		orderitems = self.orderitem_set.all()
+		total = sum([item.get_total for item in orderitems])
+		return total 
 
-# class UserManager(BaseUserManager):
-#     use_in_migrations = True
+	@property
+	def get_cart_items(self):
+		orderitems = self.orderitem_set.all()
+		total = sum([item.quantity for item in orderitems])
+		return total 
 
-#     def _create_user(self, email, password, **extra_fields):
-#         """
-#         Creates and saves a User with the given email and password.
-#         """
-#         if not email:
-#             raise ValueError('The given email must be set')
-#         email = self.normalize_email(email)
-#         user = self.model(email=email, **extra_fields)
-#         user.set_password(password)
-#         user.save(using=self._db)
-#         return user
+class OrderItem(models.Model):
+	product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
+	order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True)
+	quantity = models.IntegerField(default=0, null=True, blank=True)
+	date_added = models.DateTimeField(auto_now_add=True)
 
-#     def create_user(self, email, password=None, **extra_fields):
-#         extra_fields.setdefault('is_superuser', False)
-#         return self._create_user(email, password, **extra_fields)
+	@property
+	def get_total(self):
+		total = self.product.price * self.quantity
+		return total
 
-#     def create_superuser(self, email, password=None, **extra_fields):
-#         extra_fields.setdefault('is_superuser', True)
-#         extra_fields.setdefault('is_staff', True)
+class ShippingAddress(models.Model):
+	customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True)
+	order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True)
+	address = models.CharField(max_length=200, null=False)
+	city = models.CharField(max_length=200, null=False)
+	state = models.CharField(max_length=200, null=False)
+	zipcode = models.CharField(max_length=200, null=False)
+	date_added = models.DateTimeField(auto_now_add=True)
 
-#         if extra_fields.get('is_superuser') is not True:
-#             raise ValueError('Superuser must have is_superuser=True.')
-
-#         print("email...", email)
-#         print("password...", password)
-#         return self._create_user(email, password=password, **extra_fields)
-
-
-# class User(AbstractBaseUser, PermissionsMixin):
-
-#     CUSTOMER = 1
-#     ADMIN = 2
-#     ROLE_CHOICES = (
-#         (CUSTOMER, 'customer'),
-#         (ADMIN, 'admin'),
-#     )
-
-#     email = models.EmailField(_('email address'), unique=True)
-#     first_name = models.CharField(_('first name'), max_length=30, blank=True)
-#     last_name = models.CharField(_('last name'), max_length=30, blank=True)
-#     date_joined = models.DateTimeField(_('date joined'), auto_now_add=True)
-#     is_active = models.BooleanField(_('active'), default=True)
-#     is_staff = models.BooleanField(default=False)
-#     user_type = models.IntegerField(choices=ROLE_CHOICES, null=True)
-
-#     objects = UserManager()
-
-#     USERNAME_FIELD = 'email'
-#     REQUIRED_FIELDS = []
-
-#     class Meta:
-#         verbose_name = _('user')
-#         verbose_name_plural = _('users')
-
-#     def get_full_name(self):
-#         '''
-#         Returns the first_name plus the last_name, with a space in between.
-#         '''
-#         full_name = '%s %s' % (self.first_name, self.last_name)
-#         return full_name.strip()
-
-#     def get_short_name(self):
-#         '''
-#         Returns the short name for the user.
-#         '''
-#         return self.first_name
-
-#     def email_user(self, subject, message, from_email=None, **kwargs):
-#         '''
-#         Sends an email to this User.
-#         '''
-#         send_mail(subject, message, from_email, [self.email], **kwargs)
-
-
-# class Profile(models.Model):
-#     username = models.CharField(max_length=30)
-#     user = models.ForeignKey(User, on_delete=models.CASCADE,related_name='profile')
-#     phone_number = models.IntegerField()
-#     region = models.CharField(max_length=30)
-
-#     def __str__(self):
-#         return f'{self.user.last_name} Profile'
-
-#     def save_profile(self):
-#         self.save
-
-#     def delete_profile(self):
-#         self.delete()
-
-
-# class Comment(models.Model):
-#     user = models.ForeignKey(User, on_delete=models.CASCADE)
-#     comment = models.TextField()
-#     product_id = models.ForeignKey(
-#         "Product", on_delete=models.CASCADE, related_name='comment')
-
-#     def __str__(self):
-#         return self.comment
-
-#     def save_comment(self):
-#         self.save()
-
-#     def delete_comment(self):
-#         self.delete()
-
-
-# class Order(models.Model):
-#     user = models.ForeignKey(User, on_delete=models.CASCADE)
-#     date = models.DateTimeField(_('date of order'), auto_now_add=True)
-#     product_id = models.ForeignKey(
-#         "Product", on_delete=models.CASCADE, related_name='order')
-#     delivered = models.BooleanField()
-
-#     # def __str__(self):
-#     #     return self.date
-
-#     def save_order(self):
-#         self.save()
-
-#     def delete_order(self):
-#         self.delete()
+	def __str__(self):
+		return self.address
