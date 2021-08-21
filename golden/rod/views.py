@@ -36,7 +36,7 @@ def register(request):
     return render(request,'registration/registration.html',{'form':form})
 
 def login(request):
-    return render(request,"registration/login.html",{"form":form})
+    return render(request,"registration/login.html")
 
 def logout_request(request):
     logout(request)
